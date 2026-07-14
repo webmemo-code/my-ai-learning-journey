@@ -4,3 +4,4 @@
 # Event kinds: planted · clearing · transplanted · felled · renamed · reserved.
 # Example first planting (remove the leading # and make it yours):
 #{"kind":"planted","tree":"your-github-name/your-tree-repo","url":"https://raw.githubusercontent.com/your-github-name/your-tree-repo/main/data/tree.json","clearing":"commons","ts":"2026-01-01T00:00:00Z"}
+{"kind":"planted","tree":"webmemo-code/ai-learning-tree","url":"https://raw.githubusercontent.com/webmemo-code/ai-learning-tree/main/data/tree.json","clearing":"commons","ts":"2026-07-14T21:07:54Z"}
