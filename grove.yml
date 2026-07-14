@@ -1,0 +1,16 @@
+# grove.yml — this grove's identity and placement constants.
+#
+# Placement is a pure function of plantings.jsonl + these values (ADR-0007):
+# CHANGING seed / plotPitch / clearingCapacity AFTER TREES ARE PLANTED MOVES
+# EVERY TREE — the one betrayal this system is designed to prevent. Set them
+# once, before the first planting, then treat them as soil: not yours to move.
+
+name: "My AI learning journey"       # the first real grove — planted 2026-07-14
+seed: "my-ai-learning-journey-2026"  # set before the first planting; never again
+
+# placement constants (defaults from grove/place.mjs DEFAULTS)
+plotPitch: 32                  # one plot per tree, identical for everyone ("equal soil")
+clearingCapacity: 256          # every clearing reserves space for this many at creation
+
+# the placement algorithm this grove is pinned to (semver-sacred; major = trees move)
+placeVersion: "1.0.0"

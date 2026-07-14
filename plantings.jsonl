@@ -1,0 +1,6 @@
+# The planting log — THE single source of truth for who stands where (ADR-0006).
+# Append-only: one JSON event per line, FILE ORDER IS SLOT ORDER. Never sort,
+# never dedupe, never rewrite. Joining = a PR that appends one "planted" line.
+# Event kinds: planted · clearing · transplanted · felled · renamed · reserved.
+# Example first planting (remove the leading # and make it yours):
+#{"kind":"planted","tree":"your-github-name/your-tree-repo","url":"https://raw.githubusercontent.com/your-github-name/your-tree-repo/main/data/tree.json","clearing":"commons","ts":"2026-01-01T00:00:00Z"}

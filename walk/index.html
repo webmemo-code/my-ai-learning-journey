@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>The grove — walk</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #05070d; font-family: "Segoe UI", system-ui, sans-serif; }
+  #err {
+    position: fixed; inset: 0; display: none; place-items: center; z-index: 50;
+    background: rgba(5, 7, 13, 0.92); color: #cfd8e3; text-align: center; padding: 24px;
+  }
+  #err.on { display: grid; }
+  #err .box { max-width: 540px; }
+  #err h2 { color: #ff9d9d; font-size: 18px; margin: 0 0 10px; }
+  #err p { font-size: 13.5px; line-height: 1.6; color: #aab8c9; }
+  #err code { background: rgba(120, 160, 230, 0.16); padding: 2px 6px; border-radius: 5px; color: #eaf2fb; }
+</style>
+</head>
+<body>
+<div id="err"><div class="box">
+  <h2>Couldn't load this grove</h2>
+  <p id="errMsg"></p>
+  <p>This page reads <code>../grove.yml</code> and <code>../plantings.jsonl</code>, so it must
+  be served over http(s) — enable <b>GitHub Pages</b> on this repo (Settings → Pages →
+  deploy from branch → <code>/ (root)</code>) and open <code>/walk/</code>, or serve the repo
+  locally with <code>python -m http.server</code>. You also need to be online for three.js.</p>
+</div></div>
+
+<script type="importmap">
+{ "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.181/build/three.module.js",
+    "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.181/examples/jsm/"
+} }
+</script>
+
+<script type="module">
+// This grove's own walkable page — self-contained: the renderer (walk-app.mjs)
+// and the placement function (tools/place.mjs) are vendored into this repo, so
+// the grove keeps working even if the mother tree falls.
+import { placeGrove, parsePlantings } from '../tools/place.mjs';
+import { loadGrove, startGroveWalk } from './walk-app.mjs';
+
+try {
+  const { config, events } = await loadGrove('..', parsePlantings);
+  window.__dbg = await startGroveWalk({
+    placeGrove, config, events,
+    title: config.name || 'The grove — walk',
+    subtitle: 'a shared forest of AI learning trees',
+    blurb: `Every member is one tree, placed by the planting log — nobody's tree ever
+      moves. <b>Drag</b> to look, <b>WASD / arrows</b> to walk, <b>wheel</b> to glide,
+      click a tree to meet its grower. Want to stand here too? See the README.`,
+    note: 'grove walk · impostor LOD — visit a tree to see it in full',
+  });
+} catch (e) {
+  document.getElementById('errMsg').textContent = String(e.message || e);
+  document.getElementById('err').classList.add('on');
+  throw e;
+}
+</script>
+</body>
+</html>

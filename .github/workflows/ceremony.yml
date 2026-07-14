@@ -1,0 +1,25 @@
+# The planting ceremony's CI check (ADR-0006): every PR that touches the
+# planting log is validated — append-only, still places, well-formed, authored
+# by the tree's owner. The keeper merges; this check just does the eyeballing.
+name: Planting ceremony
+
+on:
+  pull_request:
+    paths:
+      - 'plantings.jsonl'
+
+jobs:
+  ceremony:
+    name: Validate the planting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Fetch the base planting log
+        run: |
+          git fetch --depth=1 origin "${{ github.event.pull_request.base.ref }}"
+          git show FETCH_HEAD:plantings.jsonl > /tmp/base-plantings.jsonl 2>/dev/null || : > /tmp/base-plantings.jsonl
+      - name: Validate the ceremony
+        run: node tools/validate-ceremony.mjs --base /tmp/base-plantings.jsonl --head plantings.jsonl --actor "${{ github.actor }}"
